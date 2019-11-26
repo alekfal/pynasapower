@@ -19,7 +19,7 @@ from helping_functions import check_angstromAB, ea_from_tdew
 
 # Define some lambdas to take care of unit conversions.
 MJ_to_KJ = lambda x: x * 1000.
-tdew_to_hpa = lambda x: ea_from_tdew(x) * 10.
+tdew_to_kpa = lambda x: ea_from_tdew(x)
 to_date = lambda d: d.date()
 
 class NASAPowerMeteorologicalData():
@@ -45,7 +45,6 @@ class NASAPowerMeteorologicalData():
         * longitude - Longitude (float)
         * start_date - Starting date (datetime.date)
         * end_date - Ending date (datetime.date)
-        * tempAverage - Temporal resolution of the data. Modes:{'DAILY', 'INTERANNUAL'}, default = 'DAILY'
         * to_PCSE - If true the tool will write the results in a format compatible to PCSE. In other case it will write as in the dataframe
         * to_file - Save to file if true (bool) (Optional, default = False)
         * filename - Name of the new file (string) (Optional, default = meteorological_data.xls)
@@ -215,8 +214,6 @@ class NASAPowerMeteorologicalData():
             df_power[varname] = s
         df_power = pd.DataFrame(df_power)
         df_power["DAY"] = pd.to_datetime(df_power.index, format="%Y%m%d")
-
-
         # find all rows with one or more missing values (NaN)
         ix = df_power.isnull().any(axis=1)
         # Get all rows without missing values
@@ -235,7 +232,7 @@ class NASAPowerMeteorologicalData():
         Outputs:
             * An excel file with the data.
         """
-        writer = pd.ExcelWriter(filename, engine = 'xlsxwriter')   
+        writer = pd.ExcelWriter(filename, engine = 'openpyxl', date_format = 'm/d/yyyy')
         row = 0
         for dataframe in df_list:
             dataframe.to_excel(writer,sheet_name = sheet,startrow = row, startcol = 0, header = header, index = False)   
@@ -256,7 +253,6 @@ class NASAPowerMeteorologicalData():
         Outputs:
             * An excel file and the final dataframe.
         """
-        
 
         # If to_PCSE is True the output excel format is different
         if self.to_file == True and self.to_PCSE == True:
@@ -266,14 +262,17 @@ class NASAPowerMeteorologicalData():
                 "IRRAD": df_power.ALLSKY_SFC_SW_DWN.apply(MJ_to_KJ),
                 "TMIN": df_power.T2M_MIN,
                 "TMAX": df_power.T2M_MAX,
-                "VAP": df_power.T2MDEW.apply(tdew_to_hpa),
+                "VAP": df_power.T2MDEW.apply(tdew_to_kpa),
                 "WIND": df_power.WS2M,
                 "RAIN": df_power.PRECTOT
                 })
             df_final['SNOWDEPTH'] = -9999
-            header = 'Site Characteristics\nStation\nDescription\nSource\nContact\nMissing values\t-9999\nLongitude\tLatitude\tElevation\tAngstromA\tAngstromB\tHasSunshine\n{}\t{}\t{}\t{}\t{}\t0\nObserved data\n DAY\tIRRAD\tTMIN\tTMAX\tVAP\tWIND\tRAIN\tSNOWDEPTH\ndate\tkJ/m2/day or hours\tCelsius\tCelsius\tkPa\tm/sec\tmm\tcm'.format(self.longitude, self.latitude, self.elevation, self.angstA, self.angstB)
+
+            header = 'Site Characteristics\nCountry\nStation\nDescription\nSource\nContact\nMissing values\t-9999\nLongitude\tLatitude\tElevation\tAngstromA\tAngstromB\tHasSunshine\n{}\t{}\t{}\t{}\t{}\t0\nObserved data\nDAY\tIRRAD\tTMIN\tTMAX\tVAP\tWIND\tRAIN\tSNOWDEPTH\ndate\tkJ/m2/day or hours\tCelsius\tCelsius\tkPa\tm/sec\tmm\tcm'.format(self.longitude, self.latitude, self.elevation, self.angstA, self.angstB)
             df_header = pd.DataFrame([x.split('\t') for x in header.split('\n')])
-        
+            # Convert string values of line 8 and 6 to floats
+            df_header.iloc[8] = df_header.iloc[8].astype(float)
+            df_header.iloc[6, 1] = float(df_header.iloc[6, 1])
             # list of dataframes
             dfs = [df_header, df_final]
 
@@ -286,7 +285,7 @@ class NASAPowerMeteorologicalData():
                 "DAY": df_power.DAY.apply(to_date),
                 "IRRAD": df_power.ALLSKY_SFC_SW_DWN.apply(MJ_to_KJ),
                 "T2M": df_power.T2M,
-                "VAP": df_power.T2MDEW.apply(tdew_to_hpa),
+                "VAP": df_power.T2MDEW.apply(tdew_to_kpa),
                 "WIND": df_power.WS2M,
                 "RAIN": df_power.PRECTOT})
             

@@ -1,4 +1,4 @@
-# NASA_Meteo_Data_Tool
+# NASAMeteoDataTool
 Download Meteorological Data from NASA POWER API (https://power.larc.nasa.gov/)
 
 The NASA POWER database is a global database of daily weather data

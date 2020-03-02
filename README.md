@@ -40,6 +40,7 @@ longitude - Longitude
 angstormA - Angstrom A value
 angstormB - Angstrom B value
 power_variables - A list with the variables to download (from NASA)
+<<<<<<< HEAD
 
 #### Examples
 
@@ -65,3 +66,6 @@ meteo = NASAPowerMeteorologicalData(latitude, longitude, start_date, end_date, t
 ```
 
 
+=======
+```
+>>>>>>> 12d455df843fdc85419a3b2b06187a408d95b187

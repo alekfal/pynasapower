@@ -1,4 +1,4 @@
-# NASA_Meteo_Data_Tool
+# NASAMeteoDataTool
 ![nasa](https://user-images.githubusercontent.com/18232521/75673566-eb882880-5c8b-11ea-9a65-995f94b876bf.png)
 
 Download Meteorological Data from NASA POWER API (https://power.larc.nasa.gov/)
@@ -23,24 +23,20 @@ at: https://power.larc.nasa.gov/
 2. longitude - Longitude (float)
 3. start_date - Starting date (datetime.date)
 4. end_date - Ending date (datetime.date)
-
-Optionals:
-
 5. to_PCSE - If true the tool will write the results in a format compatible to PCSE. In other case it will write as in the dataframe
 6. to_file - Save to file if true (bool) (Optional, default = False)
 7. filename - Name of the new file (string) (Optional, default = meteorological_data.xls)
 
 #### The NASAPowerMeteorologicalData attributes
 
-data - All the downloaded data in pandas dataframe (pandas dataframe)
-description - A brief description of the downloaded data
-elevation - Elevation in meters
-latitude - Latitude
-longitude - Longitude
-angstormA - Angstrom A value
-angstormB - Angstrom B value
-power_variables - A list with the variables to download (from NASA)
-<<<<<<< HEAD
+1. data - All the downloaded data in pandas dataframe (pandas dataframe)
+2. description - A brief description of the downloaded data
+3. elevation - Elevation in meters
+4. latitude - Latitude
+5. longitude - Longitude
+6. angstormA - Angstrom A value
+7. angstormB - Angstrom B value
+8. power_variables - A list with the variables to download (from NASA)
 
 #### Examples
 
@@ -65,7 +61,10 @@ meteo = NASAPowerMeteorologicalData(latitude, longitude, start_date, end_date, t
 meteo = NASAPowerMeteorologicalData(latitude, longitude, start_date, end_date, to_PCSE = True, to_file = True, filename = 'PCSE_meteorological_data.xls')
 ```
 
+#### Results
 
-=======
-```
->>>>>>> 12d455df843fdc85419a3b2b06187a408d95b187
+1. Option to_PCSE = False:
+![meteo](https://user-images.githubusercontent.com/18232521/75674188-42423200-5c8d-11ea-88b3-9cfb6a219d9e.png)
+
+2. Option to_PCSE = True:
+![pcse](https://user-images.githubusercontent.com/18232521/75674240-5d14a680-5c8d-11ea-88fe-15283d65eda9.png)

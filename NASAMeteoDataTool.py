@@ -26,13 +26,13 @@ class NASAPowerMeteorologicalData():
     """
     The NASA POWER database is a global database of daily weather data
     specifically designed for agrometeorological applications. The spatial
-    resolution of the database is 0.5x0.5 degrees (as of 2018). It is
+    resolution of the database is 0.25 x 0.25 degrees. It is
     derived from weather station observations in combination with satellite
     data for parameters like radiation.
     The weather data is updated with a delay of about 3 months which makes
     the database unsuitable for real-time monitoring, nevertheless the
     POWER database is useful for many other studies.
-    Finally, note that any latitude/longitude within a 0.5 x 0.5 degrees grid box
+    Finally, note that any latitude/longitude within a 0.25 x 0.25 degrees grid box
     will yield the same weather data, e.g. there is no difference between
     latitude - longitude 5.3 - 52.1 and latitude - longitude 5.1 - 52.4.
     For more information on the NASA POWER database see the documentation
@@ -49,7 +49,7 @@ class NASAPowerMeteorologicalData():
         * to_file - Save to file if true (bool) (Optional, default = False)
         * filename - Name of the new file (string) (Optional, default = meteorological_data.xls)
     Outputs:
-        * data - All the downloaded data in pandas dataframe (pandas dataframe)
+        * data - All sthe downloaded data in pandas dataframe (pandas dataframe)
     """
 
     # Variable names in POWER data

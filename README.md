@@ -44,7 +44,7 @@ Download Meteorological data
 
 ```
 import datetime as dt
-from NASAMeteoDataTool import NASAPowerMeteorologicalData
+from pyNASAPower import NASAPowerMeteorologicalData
 
 # Latitude, Longitude for Athens, Greece
 latitude = 37.983810

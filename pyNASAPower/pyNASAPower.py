@@ -15,11 +15,11 @@ import pandas as pd
 import requests
 from requests import exceptions
 
-from helping_functions import check_angstromAB, ea_from_tdew
+from .helping_functions import helpingFunctions
 
 # Define some lambdas to take care of unit conversions.
 MJ_to_KJ = lambda x: x * 1000.
-tdew_to_kpa = lambda x: ea_from_tdew(x)
+tdew_to_kpa = lambda x: helpingFunctions.ea_from_tdew(x)
 to_date = lambda d: d.date()
 
 class NASAPowerMeteorologicalData():
@@ -145,7 +145,7 @@ class NASAPowerMeteorologicalData():
 
         # Checking the validity of the values
         try:
-            check_angstromAB(angstrom_a, angstrom_b)
+            helpingFunctions.check_angstromAB(angstrom_a, angstrom_b)
         # In other case replace them with the default values
         except:
             print ("Angstrom A/B coefficients ({}, {}) are outside of the valid range. Reverting to default values.".format(self.angstA, self.angstB))
@@ -232,7 +232,7 @@ class NASAPowerMeteorologicalData():
         Outputs:
             * An excel file with the data.
         """
-        writer = pd.ExcelWriter(filename, engine = 'openpyxl', date_format = 'm/d/yyyy')
+        writer = pd.ExcelWriter(filename, engine = 'openpyxl', date_format = 'm/d/yyyy')  # pylint: disable=abstract-class-instantiated
         row = 0
         for dataframe in df_list:
             dataframe.to_excel(writer,sheet_name = sheet,startrow = row, startcol = 0, header = header, index = False)   

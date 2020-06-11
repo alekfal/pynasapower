@@ -105,4 +105,4 @@ venv.bak/
 
 # custom folders and files and virtual enviroments
 testNASAPower/
-
+.vscode/

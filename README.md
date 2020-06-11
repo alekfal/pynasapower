@@ -38,6 +38,14 @@ at: https://power.larc.nasa.gov/
 7. angstormB - Angstrom B value
 8. power_variables - A list with the variables to download (from NASA)
 
+#### Installation
+
+```
+$git clone https://github.com/alekfal/NASAMeteoDataTool.git
+$cd NASAMeteoDataTool/
+$pip3 install .
+```
+
 #### Examples
 
 Download Meteorological data
@@ -65,8 +73,9 @@ meteo = NASAPowerMeteorologicalData(latitude, longitude, start_date, end_date, t
 
 1. Option to_PCSE = False (meteorological_data.xls):
 
-![meteo](https://user-images.githubusercontent.com/18232521/75674188-42423200-5c8d-11ea-88b3-9cfb6a219d9e.png)
+![meteo](https://user-images.githubusercontent.com/18232521/84373212-ed477d80-abe4-11ea-8159-5bc53401c6d2.png)
+
 
 2. Option to_PCSE = True (PCSE_meteorological_data.xls):
 
-![pcse](https://user-images.githubusercontent.com/18232521/75674240-5d14a680-5c8d-11ea-88fe-15283d65eda9.png)
+![pcse](https://user-images.githubusercontent.com/18232521/84373278-02bca780-abe5-11ea-9c18-95e028d11b7b.png)

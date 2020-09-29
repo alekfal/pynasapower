@@ -78,4 +78,4 @@ meteo = NASAPowerMeteorologicalData(latitude, longitude, start_date, end_date, t
 
 2. Option to_PCSE = True (PCSE_meteorological_data.xls):
 
-![pcse](https://user-images.githubusercontent.com/18232521/84373278-02bca780-abe5-11ea-9c18-95e028d11b7b.png)
+![PCSE](https://user-images.githubusercontent.com/18232521/94548874-08a0cc00-025a-11eb-8e00-ab9b46db5b37.png

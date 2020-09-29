@@ -40,17 +40,17 @@ at: https://power.larc.nasa.gov/
 
 #### Installation
 
-```
-$git clone https://github.com/alekfal/NASAMeteoDataTool.git
-$cd NASAMeteoDataTool/
-$pip3 install .
+```bash
+git clone https://github.com/alekfal/NASAMeteoDataTool.git
+cd NASAMeteoDataTool/
+pip3 install .
 ```
 
 #### Examples
 
 Download Meteorological data
 
-```
+```python
 import datetime as dt
 from pyNASAPower import NASAPowerMeteorologicalData
 
@@ -73,7 +73,7 @@ meteo = NASAPowerMeteorologicalData(latitude, longitude, start_date, end_date, t
 
 1. Option to_PCSE = False (meteorological_data.xls):
 
-![meteo](https://user-images.githubusercontent.com/18232521/84373212-ed477d80-abe4-11ea-8159-5bc53401c6d2.png)
+![meteo](https://user-images.githubusercontent.com/18232521/94548147-f70af480-0258-11eb-885d-0fab180c700b.png)
 
 
 2. Option to_PCSE = True (PCSE_meteorological_data.xls):

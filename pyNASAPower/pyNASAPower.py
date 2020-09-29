@@ -37,19 +37,6 @@ class NASAPowerMeteorologicalData():
     latitude - longitude 5.3 - 52.1 and latitude - longitude 5.1 - 52.4.
     For more information on the NASA POWER database see the documentation
     at: https://power.larc.nasa.gov/
-
-    The NASAPowerMeteorologicalData module retrieves daily meteorological data from the
-    NASA POWER API.
-    Inputs:
-        * latitude - Latitude (float)
-        * longitude - Longitude (float)
-        * start_date - Starting date (datetime.date)
-        * end_date - Ending date (datetime.date)
-        * to_PCSE - If true the tool will write the results in a format compatible to PCSE. In other case it will write as in the dataframe
-        * to_file - Save to file if true (bool) (Optional, default = False)
-        * filename - Name of the new file (string) (Optional, default = meteorological_data.xls)
-    Outputs:
-        * data - All sthe downloaded data in pandas dataframe (pandas dataframe)
     """
 
     # Variable names in POWER data
@@ -61,7 +48,21 @@ class NASAPowerMeteorologicalData():
     angstB = 0.49
 
     def __init__(self, latitude, longitude, start_date, end_date, to_PCSE = False, to_file = False, filename = 'meteorological_data.xls'):
+        """The NASAPowerMeteorologicalData module retrieves daily meteorological data from the NASA POWER API.
 
+        Args:
+            latitude (float): Latitude.
+            longitude (float): Longitude.
+            start_date (datetime.date): Starting date.
+            end_date (datetime.date): Ending date.
+            to_PCSE (bool, optional): If true the tool will write the results in a format compatible to PCSE. In other case it will write as in the dataframe. Defaults to False.
+            to_file (bool, optional): Save to file if true. Defaults to False.
+            filename (str, optional): Name of the new file. Defaults to 'meteorological_data.xls'.
+
+        Raises:
+            ValueError: Raises when latitude is not between -90 and 90 degrees.
+            ValueError: Raises when longitude is not between -180 and 180 degrees.
+        """
         # Checking coordinates
         if latitude < -90 or latitude > 90:
             raise ValueError("Latitude should be between -90 and 90 degrees.")
@@ -80,18 +81,22 @@ class NASAPowerMeteorologicalData():
         self.data = self._get_and_process_NASAPower(self.latitude, self.longitude, self.start_date, self.end_date, self.to_PCSE, self.to_file, self.filename)
 
     def _get_and_process_NASAPower(self, latitude, longitude, start_date, end_date, to_PCSE, to_file, filename):
-        """
-        Handles the retrieval and processing of the NASA Power data.
-        Inputs:
-            * latitude - Latitude (float)
-            * longitude - Longitude (float)
-            * start_date - Starting date (datetime.date)
-            * end_date - Ending date (datetime.date)
-            * to_PCSE - If true the tool will write the results in a format compatible to PCSE. In other case it will write as in the dataframe
-            * to_file - Save to file if true (bool) (Optional, default = False)
-            * filename - Name of the new file (string) (Optional, default = meteorological_data.xls)
-        Outputs:
-            * df_final - All the downloaded data in pandas dataframe (pandas dataframe)
+        """Handles the retrieval and processing of the NASA Power data.
+            
+        Args:
+            latitude (float): Latitude.
+            longitude (float): Longitude.
+            start_date (datetime.date): Starting date.
+            end_date (datetime.date): Ending date.
+            to_PCSE (bool, optional): If true the tool will write the results in a format compatible to PCSE. In other case it will write as in the dataframe. Defaults to False.
+            to_file (bool, optional): Save to file if true. Defaults to False.
+            filename (str, optional): Name of the new file. Defaults to 'meteorological_data.xls'.
+
+        Raises:
+            RuntimeError: When fails to connect with the servers
+
+        Returns:
+            DataFrame: The downloaded data
         """
 
         # Sending request to server
@@ -113,8 +118,7 @@ class NASAPowerMeteorologicalData():
         return (df_final)
 
     def _estimate_AngstAB(self, df_power):
-        """
-        Determine Angstrom A/B parameters from Top-of-Atmosphere (ALLSKY_TOA_SW_DWN) and
+        """Determine Angstrom A/B parameters from Top-of-Atmosphere (ALLSKY_TOA_SW_DWN) and
         top-of-Canopy (ALLSKY_SFC_SW_DWN) radiation values.
         The Angstrom A, B parameters are determined by dividing swv_dwn by toa_dwn
         and taking the 0.05 percentile for Angstrom A and the 0.98 percentile for
@@ -122,10 +126,11 @@ class NASAPowerMeteorologicalData():
         toa_dwn*A approaches the lower envelope of the records of swv_dwn
         values.
 
-        Inputs:
-            * df_power - dataframe with POWER data (pandas dataframe)
-        Outputs:
-            * angstrom_a, angstrom_b or self.angstA, self.angstB -  Angstrom A/B values (float)
+        Args:
+            df_power (DataFrame): Dataframe with POWER data.
+
+        Returns:
+            tuple: Angstrom A/B values.
         """
 
         print ("Starting estimation of Angstrom A/B values from NASA POWER data...")
@@ -157,16 +162,20 @@ class NASAPowerMeteorologicalData():
         return (angstrom_a, angstrom_b)
 
     def _query_NASAPower_server(self, latitude, longitude, start_date, end_date):
-        """
-        Query the NASA Power server for data on given latitude-longitude and dates.
+        """Query the NASA Power server for data on given latitude-longitude and dates.
         Currently works only with daily data.
-        Inputs:
-            * latitude - Latitude (float)
-            * longitude - Longitude (float)
-            * start_date - Starting date (datetime.date)
-            * end_date - Ending date (datetime.date)
-        Outputs:
-            * The response of the server in JSON format
+
+        Args:
+            latitude (float): Latitude.
+            longitude (float): Longitude.
+            start_date (datetime.date): Starting date.
+            end_date (datetime.date): Ending date.
+
+        Raises:
+            exceptions.HTTPError: Raises when fails to retrieve POWER data.
+
+        Returns:
+            dict: The response of the server in JSON format
         """
 
         # Build URL for retrieving data
@@ -192,16 +201,17 @@ class NASAPowerMeteorologicalData():
             raise exceptions.HTTPError("Failed retrieving POWER data, server returned HTTP code: {} on following URL {}.".format(request.status_code, request.url))
         # In other case is successful
         print ("Successfully retrieved data from NASA Power!")
-
+        
         return (request.json())
 
     def _process_POWER_records(self, powerdata):
-        """
-        Process the meteorological records returned by NASA POWER.
-        Inputs:
-            * powerdata - JSON with the meteorological data.
-        Outputs:
-            * df_power - Dataframe with the meteorological data.
+        """Process the meteorological records returned by NASA POWER.
+
+        Args:
+            powerdata (dict): JSON with the meteorological data.
+
+        Returns:
+            DataFrame: Dataframe with the meteorological data.
         """
         print ("Starting parsing of POWER records from URL retrieval...")
 
@@ -222,15 +232,13 @@ class NASAPowerMeteorologicalData():
         return (df_power)
 
     def _write_multiple_dataframes(self, df_list, sheet, header, filename):
-        """
-        Saving results to excel file.
-        Inputs:
-            * df_list - List with the dataframes to write. (list)
-            * sheet - Name of the sheet. (string)
-            * header - If True writes a header (bool)
-            * filename - Name of the file. (pathlike-string)
-        Outputs:
-            * An excel file with the data.
+        """Saving results to excel file.
+
+        Args:
+            df_list (list): List with the dataframes to write.
+            sheet (str): Name of the sheet.
+            header (bool): If True writes a header.
+            filename (str, path-like): Name of the file.
         """
         writer = pd.ExcelWriter(filename, engine = 'openpyxl', date_format = 'm/d/yyyy')  # pylint: disable=abstract-class-instantiated
         row = 0
@@ -241,17 +249,17 @@ class NASAPowerMeteorologicalData():
         writer.save()
 
     def _POWER_to_file(self, df_power, to_PCSE, to_file, filename):
-        """
-        A function for writing the results. Works in 2 modes:
+        """A function for writing the results. Works in 2 modes:
         1. If to_PCSE is True writes the results in a format that PCSE can read.
         2. In other case simply writes the data with a header.
-        Inputs:
-            * df_power - Dataframe with the meteorological data (dataframe)
-            * to_PCSE -  If to_PCSE is True writes the results in a format that PCSE can read. (bool)
-            * to_file - If True writes the results to an excel file. (bool)
-            * filename - Name of the file. (pathlike-string)
-        Outputs:
-            * An excel file and the final dataframe.
+
+        Args:
+            df_power (DataFrame): Dataframe with the meteorological data
+            to_PCSE (bool): If to_PCSE is True writes the results in a format that PCSE can read.
+            to_file (bool): If True writes the results to an excel file.
+            filename (str, path-like): Name of the file.
+        Returns:
+            DataFrame: The final dataframe.
         """
 
         # If to_PCSE is True the output excel format is different

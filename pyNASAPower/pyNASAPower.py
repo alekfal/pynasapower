@@ -40,8 +40,8 @@ class NASAPowerMeteorologicalData():
     """
 
     # Variable names in POWER data
-    power_variables = ["ALLSKY_TOA_SW_DWN", "ALLSKY_SFC_SW_DWN", "T2M", "T2M_MIN",
-                       "T2M_MAX", "T2MDEW", "WS2M", "PRECTOT"]
+    power_variables = ["TOA_SW_DWN", "ALLSKY_SFC_SW_DWN", "T2M", "T2M_MIN",
+                       "T2M_MAX", "T2MDEW", "WS2M", "PRECTOTCORR"]
     # other constants
     HTTP_OK = 200
     angstA = 0.29
@@ -106,7 +106,7 @@ class NASAPowerMeteorologicalData():
 
         # Store the informational header then parse variables
         self.description = [powerdata["header"]["title"]]
-        self.elevation = float(powerdata["features"][0]["geometry"]["coordinates"][2])
+        self.elevation = float(powerdata["geometry"]["coordinates"][2])
         df_power = self._process_POWER_records(powerdata)
 
         # Determine Angstrom A, B parameters
@@ -142,7 +142,7 @@ class NASAPowerMeteorologicalData():
             return (self.angstA, self.angstB)
 
         # Calculate relative radiation (swv_dwn/toa_dwn) and percentiles
-        relative_radiation = df_power.ALLSKY_SFC_SW_DWN / df_power.ALLSKY_TOA_SW_DWN
+        relative_radiation = df_power.ALLSKY_SFC_SW_DWN / df_power.TOA_SW_DWN
         ix = relative_radiation.notnull()
         angstrom_a = float(np.percentile(relative_radiation[ix].values, 5))
         angstrom_ab = float(np.percentile(relative_radiation[ix].values, 98))
@@ -179,23 +179,18 @@ class NASAPowerMeteorologicalData():
         """
 
         # Build URL for retrieving data
-        server = "https://power.larc.nasa.gov/cgi-bin/v1/DataAccess.py"
-        payload = {"request": "execute",
-            "identifier": "SinglePoint",
+        server = "https://power.larc.nasa.gov/api/temporal/daily/point?"
+        payload = {
             "parameters": ",".join(self.power_variables),
-            "lat": latitude,
-            "lon": longitude,
-            "startDate": start_date.strftime("%Y%m%d"),
-            "endDate": end_date.strftime("%Y%m%d"),
-            "userCommunity": "AG",
-            "tempAverage": 'DAILY',
-            "outputList": "JSON",
-            "user": "anonymous"
+            "community": "AG",
+            "latitude": latitude,
+            "longitude": longitude,
+            "start": start_date.strftime("%Y%m%d"),
+            "end": end_date.strftime("%Y%m%d"),
+            "format": "JSON"
             }
-
         print ("Starting retrieval from NASA Power...")
         request = requests.get(server, params = payload)
-
         # Check if server didn't respond to HTTP code = 200
         if request.status_code != self.HTTP_OK:
             raise exceptions.HTTPError("Failed retrieving POWER data, server returned HTTP code: {} on following URL {}.".format(request.status_code, request.url))
@@ -215,11 +210,11 @@ class NASAPowerMeteorologicalData():
         """
         print ("Starting parsing of POWER records from URL retrieval...")
 
-        fill_value = float(powerdata["header"]["fillValue"])
+        fill_value = float(powerdata["header"]["fill_value"])
 
         df_power = {}
         for varname in self.power_variables:
-            s = pd.Series(powerdata["features"][0]["properties"]["parameter"][varname])
+            s = pd.Series(powerdata["properties"]["parameter"][varname])
             s[s == fill_value] = np.NaN
             df_power[varname] = s
         df_power = pd.DataFrame(df_power)
@@ -272,7 +267,7 @@ class NASAPowerMeteorologicalData():
                 "TMAX": df_power.T2M_MAX,
                 "VAP": df_power.T2MDEW.apply(tdew_to_kpa),
                 "WIND": df_power.WS2M,
-                "RAIN": df_power.PRECTOT
+                "RAIN": df_power.PRECTOTCORR
                 })
             df_final['SNOWDEPTH'] = -9999
 
@@ -281,7 +276,7 @@ class NASAPowerMeteorologicalData():
             # Convert string values of line 8 and 6 to floats
             df_header.iloc[8] = df_header.iloc[8].astype(float)
             df_header.iloc[6, 1] = float(df_header.iloc[6, 1])
-            # list of dataframes
+            # list of dataframesls
             dfs = [df_header, df_final]
 
             # run function
@@ -295,7 +290,7 @@ class NASAPowerMeteorologicalData():
                 "T2M": df_power.T2M,
                 "VAP": df_power.T2MDEW.apply(tdew_to_kpa),
                 "WIND": df_power.WS2M,
-                "RAIN": df_power.PRECTOT})
+                "RAIN": df_power.PRECTOTCORR})
             
             dfs = [df_final,]
             self._write_multiple_dataframes(dfs, 'Data', True, filename)

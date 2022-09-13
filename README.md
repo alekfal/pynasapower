@@ -1,52 +1,51 @@
 # NASAMeteoDataTool
 ![nasa](https://user-images.githubusercontent.com/18232521/75673566-eb882880-5c8b-11ea-9a65-995f94b876bf.png)
 
-Download Meteorological Data from NASA POWER API (https://power.larc.nasa.gov/)
+Download Meteorological Data from NASA POWER restful API (https://power.larc.nasa.gov/)
 
-The NASA POWER database is a global database of daily weather data
-specifically designed for agrometeorological applications. The spatial
-resolution of the database is 0.25x0.25 degrees. It is
-derived from weather station observations in combination with satellite
-data for parameters like radiation.
-The meteorological data is updated with a delay of about 3 months which makes
-the database unsuitable for real-time monitoring, nevertheless the
-POWER database is useful for many other studies.
-Finally, note that any latitude/longitude within a 0.25 x 0.25 degrees grid box
-will yield the same weather data, e.g. there is no difference between
-latitude - longitude 5.3 - 52.1 and latitude - longitude 5.1 - 52.4.
+The NASA POWER database is a global database of daily meteorological data
+designed for agrometeorological applications and more. The spatial
+resolution of the database is 0.25x0.25 degrees. Data are retrieced from in-situ observations in combination with satellite
+data. The meteorological data is updated with a delay of about 3 months.
 For more information on the NASA POWER database see the documentation
 at: https://power.larc.nasa.gov/
 
-#### Input parameters
+### Input parameters
 
-1. latitude - Latitude (float)
-2. longitude - Longitude (float)
-3. start_date - Starting date (datetime.date)
-4. end_date - Ending date (datetime.date)
-5. to_PCSE - If true the tool will write the results in a format compatible to PCSE. In other case it will write as in the dataframe
-6. to_file - Save to file if true (bool) (Optional, default = False)
-7. filename - Name of the new file (string) (Optional, default = meteorological_data.xls)
 
-#### The NASAPowerMeteorologicalData attributes
+| Name             | Description                                                                                                                                 |
+|------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| ```latitude```   | Latitude (```float```)                                                                                                                      |
+| ```longitude```  | Longitude (```float```)                                                                                                                     |
+| ```start_date``` | Start date (```datetime.date```)                                                                                                            |
+| ```end_date```   | End date (```datetime.date```)                                                                                                              |
+| ```to_PCSE```    | If true (```bool```) the tool will write the results in a format compatible to PCSE. In other case data will be written as in the dataframe.|
+| ```to_file```    | Save to file if true (```bool - Optional, default = False```)                                                                               |
+| ```filename```   | Name of the new file (```string - Optional, default = meteorological_data.xls```)                                                           |
 
-1. data - All the downloaded data in pandas dataframe (pandas dataframe)
-2. description - A brief description of the downloaded data
-3. elevation - Elevation in meters
-4. latitude - Latitude
-5. longitude - Longitude
-6. angstormA - Angstrom A value
-7. angstormB - Angstrom B value
-8. power_variables - A list with the variables to download (from NASA)
+### The NASAPowerMeteorologicalData class attributes
 
-#### Installation
+| Name                  | Description                                                                    |
+|-----------------------|--------------------------------------------------------------------------------|
+| ```data```            | All the downloaded data in pandas dataframe (```pandas.dataframe```)           |
+| ```description```     | A brief description of the downloaded data                                     |
+| ```elevation```       | Elevation in meters (m)                                                        |
+| ```latitude```        | Latitude                                                                       |
+| ```longitude```       | Longitude                                                                      |
+| ```angstormA```       | Angstrom A value                                                               |
+| ```angstormB```       | Angstrom B value                                                               |
+| ```angstormB```       | Angstrom B value                                                               |
+| ```power_variables``` | A list with the variables to download (from NASA)                              |
+
+### Installation
 
 ```bash
 git clone https://github.com/alekfal/NASAMeteoDataTool.git
 cd NASAMeteoDataTool/
-pip3 install .
+pip install .
 ```
 
-#### Examples
+### Examples
 
 Download Meteorological data
 

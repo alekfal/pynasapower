@@ -1,1 +1,0 @@
-from .pyNASAPower import NASAPowerMeteorologicalData

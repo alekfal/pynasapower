@@ -1,80 +1,55 @@
-# NASAMeteoDataTool
+# pynasapower
 ![nasa](https://user-images.githubusercontent.com/18232521/75673566-eb882880-5c8b-11ea-9a65-995f94b876bf.png)
 
-Download Meteorological Data from NASA POWER restful API (https://power.larc.nasa.gov/)
+[![Build Status](https://github.com/alekfal/pynasapower/actions/workflows/python-package.yml/badge.svg?branch=master)](https://github.com/alekfal/pynasapower/actions)
+[![Code coverage](https://codecov.io/gh/alekfal/pynasapower/branch/master/graph/badge.svg)](https://codecov.io/gh/alekfal/pynasapower)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/pynasapower.svg?style=flat-square)](https://pypi.org/project/pynasapower/)
+[![Overall downloads](https://pepy.tech/badge/pynasapower)](https://pepy.tech/project/pynasapower)
+[![Last month downloads](https://pepy.tech/badge/pynasapower/month)](https://pepy.tech/project/pynasapower)
 
-The NASA POWER database is a global database of daily meteorological data
-designed for agrometeorological applications and more. The spatial
-resolution of the database is 0.25x0.25 degrees. Data are retrieced from in-situ observations in combination with satellite
-data. The meteorological data is updated with a delay of about 3 months.
-For more information on the NASA POWER database see the documentation
-at: https://power.larc.nasa.gov/
+Download meteorological data from NASA POWER restful API (https://power.larc.nasa.gov/) using pynasapower API client.
 
-### Input parameters
+The NASA POWER database is a global database of daily meteorological data designed for agrometeorological applications and more. 
+Data are retrieced from in-situ observations in combination with satellite data. The meteorological data is updated with a delay of about 3 months. For more information on the NASA POWER database see the documentation at: https://power.larc.nasa.gov/
 
-
-| Name             | Description                                                                                                                                 |
-|------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
-| ```latitude```   | Latitude (```float```)                                                                                                                      |
-| ```longitude```  | Longitude (```float```)                                                                                                                     |
-| ```start_date``` | Start date (```datetime.date```)                                                                                                            |
-| ```end_date```   | End date (```datetime.date```)                                                                                                              |
-| ```to_PCSE```    | If true (```bool```) the tool will write the results in a format compatible to PCSE. In other case data will be written as in the dataframe.|
-| ```to_file```    | Save to file if true (```bool - Optional, default = False```)                                                                               |
-| ```filename```   | Name of the new file (```string - Optional, default = meteorological_data.xls```)                                                           |
-
-### The NASAPowerMeteorologicalData class attributes
-
-| Name                  | Description                                                                    |
-|-----------------------|--------------------------------------------------------------------------------|
-| ```data```            | All the downloaded data in pandas dataframe (```pandas.dataframe```)           |
-| ```description```     | A brief description of the downloaded data                                     |
-| ```elevation```       | Elevation in meters (m)                                                        |
-| ```latitude```        | Latitude                                                                       |
-| ```longitude```       | Longitude                                                                      |
-| ```angstormA```       | Angstrom A value                                                               |
-| ```angstormB```       | Angstrom B value                                                               |
-| ```angstormB```       | Angstrom B value                                                               |
-| ```power_variables``` | A list with the variables to download (from NASA)                              |
-
-### Installation
+### Installation from source
 
 ```bash
-git clone https://github.com/alekfal/NASAMeteoDataTool.git
-cd NASAMeteoDataTool/
+git clone https://github.com/alekfal/pynasapower.git
+cd pynasapower/
 pip install .
+```
+
+### Instalation from PyPI
+
+```bash
+pip install pynasapower
 ```
 
 ### Examples
 
-Download Meteorological data
+Download meteorological data for a point in Athens, Greece and save result in `*.csv` format.
 
 ```python
-import datetime as dt
-from pyNASAPower import NASAPowerMeteorologicalData
+from pynasapower.get_data import query_power
+from pynasapower.geometry import point, bbox
+import datetime
 
-# Latitude, Longitude for Athens, Greece
-latitude = 37.983810
-longitude = 23.727539
-
-# Dates for downloading meteorological data in format (y, m, d)
-start_date = dt.date(2017, 1, 1)
-end_date = dt.date(2017, 12, 31)
-
-# Download data
-meteo = NASAPowerMeteorologicalData(latitude, longitude, start_date, end_date, to_PCSE = False, to_file = True, filename = 'meteorological_data.xls')
-
-# Or PCSE format
-meteo = NASAPowerMeteorologicalData(latitude, longitude, start_date, end_date, to_PCSE = True, to_file = True, filename = 'PCSE_meteorological_data.xls')
+# Run for point in Athens and save the result in csv format
+gpoint = point(23.727539, 37.983810, "EPSG:4326")
+start = datetime.date(2022, 1, 1)
+end = datetime.date(2022, 2, 1)
+data = query_power(gpoint, start, end, "./data", True, "ag", [], "daily", "point", "csv")
 ```
 
-#### Results
+Download meteorological data for a polygon in Athens, Greece and save result in `*.csv` format.
 
-1. Option to_PCSE = False (meteorological_data.xls):
+```python
+# Run for small bbox in Athens and save the result in csv format
+gbbox = bbox(23.727539, 26.73, 37.983810, 40.99, "EPSG:4326")
+start = datetime.date(2022, 1, 1)
+end = datetime.date(2022, 2, 1)
+data = query_power(gpoint, start, end, "./data", True, "ag", [], "daily", "regional", "csv")
+```
 
-![meteo](https://user-images.githubusercontent.com/18232521/94548147-f70af480-0258-11eb-885d-0fab180c700b.png)
-
-
-2. Option to_PCSE = True (PCSE_meteorological_data.xls):
-
-![PCSE](https://user-images.githubusercontent.com/18232521/94549025-400f7880-025a-11eb-923f-535d27dcc4f4.png)
+Read more about the software in readthedocs.

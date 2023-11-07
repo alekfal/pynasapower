@@ -1,0 +1,15 @@
+-BEGIN HEADER-
+NASA/POWER CERES/MERRA2 Native Resolution Climatology Climatologies 
+3-year Meteorological and Solar Monthly & Annual Climatologies (January 2020 - December 2022) 
+Location: Latitude  37.9838   Longitude 23.7275 
+Elevation from MERRA-2: Average for 0.5 x 0.625 degree lat/lon region = 140.03 meters
+The value for missing source data that cannot be computed or is outside of the sources availability range: -999 
+Parameter(s): 
+T2M                   MERRA-2 Temperature at 2 Meters (C) 
+WS2M                  MERRA-2 Wind Speed at 2 Meters (m/s) 
+T2MDEW                MERRA-2 Dew/Frost Point at 2 Meters (C) 
+T2M_MAX               MERRA-2 Temperature at 2 Meters Maximum (C) 
+T2M_MIN               MERRA-2 Temperature at 2 Meters Minimum (C) 
+TOA_SW_DWN            SRB V4/CERES SYN1deg Top-Of-Atmosphere Shortwave Downward Irradiance (MJ/m^2/day) 
+PRECTOTCORR           MERRA-2 Precipitation Corrected (mm/day) 
+ALLSKY_SFC_SW_DWN     SRB V4/CERES SYN1deg All Sky Surface Shortwave Downward Irradiance (MJ/m^2/day) 

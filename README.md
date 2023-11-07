@@ -1,8 +1,8 @@
 # pynasapower
 ![nasa](https://user-images.githubusercontent.com/18232521/75673566-eb882880-5c8b-11ea-9a65-995f94b876bf.png)
 
-[![Build Status](https://github.com/alekfal/pynasapower/actions/workflows/python-package.yml/badge.svg?branch=master)](https://github.com/alekfal/pynasapower/actions)
-[![Code coverage](https://codecov.io/gh/alekfal/pynasapower/branch/master/graph/badge.svg)](https://codecov.io/gh/alekfal/pynasapower)
+[![Build Status](https://github.com/alekfal/pynasapower/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/alekfal/pynasapower/actions)
+[![Code coverage](https://codecov.io/gh/alekfal/pynasapower/branch/main/graph/badge.svg)](https://codecov.io/gh/alekfal/pynasapower)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/pynasapower.svg?style=flat-square)](https://pypi.org/project/pynasapower/)
 [![Overall downloads](https://pepy.tech/badge/pynasapower)](https://pepy.tech/project/pynasapower)
 [![Last month downloads](https://pepy.tech/badge/pynasapower/month)](https://pepy.tech/project/pynasapower)

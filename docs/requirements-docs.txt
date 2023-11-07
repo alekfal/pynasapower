@@ -1,0 +1,13 @@
+pandas
+numpy
+requests
+geopandas
+shapely
+xarray
+scipy
+sphinx
+sphinxcontrib-apidoc
+sphinxcontrib-napoleon
+sphinx_rtd_theme
+myst_parser
+sphinxemoji

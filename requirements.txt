@@ -1,5 +1,7 @@
-pandas>=1.0.1
-numpy>=1.18.5
-requests>=2.22.0
-openpyxl>=2.4.9
-
+pandas
+numpy
+requests
+geopandas
+shapely
+xarray
+scipy

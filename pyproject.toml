@@ -7,7 +7,7 @@ py-modules = []
 
 [project]
 name = "pynasapower"
-version = "0.0.1a0"
+version = "0.0.1a1"
 description = "Download meteorological data from NASA POWER API (https://power.larc.nasa.gov/)"
 readme = {file = "README.md", content-type='text/markdown'}
 license = {text = "GPL3"}

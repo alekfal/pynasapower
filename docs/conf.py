@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'pynasapower'
 copyright = '2023, Alekos Falagas'
 author = 'Alekos Falagas'
-release = '0.0.1a0'
+release = '0.0.1a1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

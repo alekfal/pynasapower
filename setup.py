@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name = "pynasapower", # Replace with your own username
-    version = "0.0.1a0",
+    version = "0.0.1a1",
     author = "Falagas Alekos",
     author_email = "alek.falagas@gmail.com",
     description = "Download Meteorological Data from NASA POWER API (https://power.larc.nasa.gov/)",

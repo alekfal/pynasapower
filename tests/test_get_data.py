@@ -121,6 +121,6 @@ params_valid_json = [
     ]
 
 @pytest.mark.parametrize("geometry, start, end, to_file, path, community, parameters, temporal_api, spatial_api, format", params_valid_json,)
-def test_get_data_valid_netcdf(geometry, start, end, to_file, path, community, parameters, temporal_api, spatial_api, format):
+def test_get_data_valid_json(geometry, start, end, to_file, path, community, parameters, temporal_api, spatial_api, format):
     result = query_power(geometry, start, end, to_file, path, community, parameters, temporal_api, spatial_api, format)
     assert isinstance(result, dict)

@@ -24,4 +24,4 @@ Download meteorological data for a polygon in Athens, Greece and save result in 
     gbbox = bbox(23.727539, 26.73, 37.983810, 40.99, "EPSG:4326")
     start = datetime.date(2022, 1, 1)
     end = datetime.date(2022, 2, 1)
-    data = query_power(gpoint, start, end, "./data", True, "ag", [], "daily", "regional", "csv")
+    data = query_power(gbbox, start, end, "./data", True, "ag", [], "daily", "regional", "csv")

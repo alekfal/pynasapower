@@ -47,6 +47,12 @@ is `datetime.date(2022, 2, 1)`.
 
 Download meteorological data for a point in Athens, Greece and save result in `*.csv` format.
 
+First, create a "data" folder to hold the POWER data upon download in your current environment.
+
+```bash
+mkdir data
+```
+
 ```python
 from pynasapower.get_data import query_power
 from pynasapower.geometry import point, bbox

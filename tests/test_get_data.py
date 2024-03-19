@@ -1,3 +1,4 @@
+import os
 import pytest
 import geopandas as gpd
 from shapely.geometry import Point, Polygon, MultiPolygon
@@ -65,25 +66,25 @@ gbbox_invalid_lon = bbox(20., 20.1, 37., 39.1, "EPSG:4326")
 gbbox_invalid_lat = bbox(20., 22.1, 37., 37.1, "EPSG:4326")
 
 params = [
-    (gpoint, start, end, True, "./data", "ag", [], "random", "point", "csv", pytest.raises(ValueError)),
-    (gpoint, start, end, True, "./data", "random", [], "hourly", "point", "csv", pytest.raises(ValueError)),
-    (gpoint, start, end, True, "./data", "ag", [], "hourly", "random", "csv", pytest.raises(ValueError)),
-    (gpoint, start, end, True, "./data", "ag", [], "hourly", "point", "random", pytest.raises(ValueError)),
-    (gbbox, start, end, True, "./data", "ag", [], "hourly", "regional", "csv", pytest.raises(ValueError)),
-    (gpoint, start, end, True, "./data", "ag", r_params, "hourly", "point", "csv", pytest.raises(ValueError)),
-    (gpoint, start, end, True, "./data", "ag", r_params, "daily", "point", "csv", pytest.raises(ValueError)),
-    (gpoint, start, end, True, "./data", "ag", r_params, "monthly", "point", "csv", pytest.raises(ValueError)),
-    (wrong_geom, start, end, True, "./data", "ag", [], "monthly", "point", "csv", pytest.raises(TypeError)),
-    (gdf_two_points, start, end, True, "./data", "ag", [], "monthly", "point", "csv", pytest.raises(ValueError)),
-    (multipolygon, start, end, True, "./data", "ag", [], "monthly", "regional", "csv", pytest.raises(ValueError)),
-    (gpoint, start, end, True, "./data", "ag", [], "monthly", "regional", "csv", pytest.raises(ValueError)),
-    (gbbox, start, end, True, "./data", "ag", [], "monthly", "point", "csv", pytest.raises(ValueError)),
-    (gpoint, wrong_start_date_format, end, True, "./data", "ag", [], "monthly", "point", "csv", pytest.raises(TypeError)),
-    (gpoint, start, wrong_end_date_format, True, "./data", "ag", [], "monthly", "point", "csv", pytest.raises(TypeError)),
-    (gpoint, start_later, end_later, True, "./data", "ag", [], "monthly", "point", "csv", pytest.raises(ValueError)),
-    (gpoint, start, end, True, "./data", "ag", [], "climatology", "point", "csv", pytest.raises(ValueError)),
-    (gbbox_invalid_lon, start, end, True, "./data", "ag", [], "monthly", "regional", "csv", pytest.raises(ValueError)),
-    (gbbox_invalid_lat, start, end, True, "./data", "ag", [], "monthly", "regional", "csv", pytest.raises(ValueError)),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "random", "point", "csv", pytest.raises(ValueError)),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "random", [], "hourly", "point", "csv", pytest.raises(ValueError)),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "hourly", "random", "csv", pytest.raises(ValueError)),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "hourly", "point", "random", pytest.raises(ValueError)),
+    (gbbox, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "hourly", "regional", "csv", pytest.raises(ValueError)),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", r_params, "hourly", "point", "csv", pytest.raises(ValueError)),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", r_params, "daily", "point", "csv", pytest.raises(ValueError)),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", r_params, "monthly", "point", "csv", pytest.raises(ValueError)),
+    (wrong_geom, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "point", "csv", pytest.raises(TypeError)),
+    (gdf_two_points, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "point", "csv", pytest.raises(ValueError)),
+    (multipolygon, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "regional", "csv", pytest.raises(ValueError)),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "regional", "csv", pytest.raises(ValueError)),
+    (gbbox, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "point", "csv", pytest.raises(ValueError)),
+    (gpoint, wrong_start_date_format, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "point", "csv", pytest.raises(TypeError)),
+    (gpoint, start, wrong_end_date_format, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "point", "csv", pytest.raises(TypeError)),
+    (gpoint, start_later, end_later, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "point", "csv", pytest.raises(ValueError)),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "climatology", "point", "csv", pytest.raises(ValueError)),
+    (gbbox_invalid_lon, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "regional", "csv", pytest.raises(ValueError)),
+    (gbbox_invalid_lat, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "regional", "csv", pytest.raises(ValueError)),
 
     ]
 
@@ -98,8 +99,8 @@ start_climatology = datetime.date(2020, 1, 1)
 end_climatology = datetime.date(2022, 1, 1)
 
 params_valid_csv = [
-    (gpoint, start, end, True, "./data", "ag", [], "daily", "point", "csv"),
-    (gpoint, start, end, True, "./data", "ag", [], "daily", "point", "ascii"),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "daily", "point", "csv"),
+    (gpoint, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "daily", "point", "ascii"),
     ]
 
 @pytest.mark.parametrize("geometry, start, end, to_file, path, community, parameters, temporal_api, spatial_api, format", params_valid_csv,)
@@ -108,7 +109,7 @@ def test_get_data_valid_csv(geometry, start, end, to_file, path, community, para
     assert isinstance(result, pd.DataFrame)
 
 params_valid_netcdf = [
-    (gbbox, start, end, True, "./data", "ag", [], "monthly", "regional", "netcdf"),
+    (gbbox, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "regional", "netcdf"),
     ]
 
 @pytest.mark.parametrize("geometry, start, end, to_file, path, community, parameters, temporal_api, spatial_api, format", params_valid_netcdf,)
@@ -117,7 +118,7 @@ def test_get_data_valid_netcdf(geometry, start, end, to_file, path, community, p
     assert isinstance(result, xr.Dataset)
 
 params_valid_json = [
-    (gbbox, start, end, True, "./data", "ag", [], "monthly", "regional", "json"),
+    (gbbox, start, end, True, os.path.join(os.path.dirname(__file__), "data"), "ag", [], "monthly", "regional", "json"),
     ]
 
 @pytest.mark.parametrize("geometry, start, end, to_file, path, community, parameters, temporal_api, spatial_api, format", params_valid_json,)

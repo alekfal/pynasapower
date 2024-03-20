@@ -46,12 +46,13 @@ is `datetime.date(2022, 2, 1)`.
 ### Quickstart
 
 Download meteorological data for a point in Athens, Greece and save result in `*.csv` format.
-
 First, create a "data" folder to hold the POWER data upon download in your current environment.
 
 ```bash
-mkdir data
+$ mkdir data
 ```
+
+Then, run in Python the following to fetch data from NASA POWER:
 
 ```python
 from pynasapower.get_data import query_power
